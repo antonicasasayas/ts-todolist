@@ -1,21 +1,18 @@
 import { Todo } from "../../todo.model";
-import { Dispatch, SetStateAction } from "react";
-import './TodoList.css'
+
+import "./TodoList.css";
 interface Props {
-  setTodos: Dispatch<SetStateAction<Todo[]>>;
+  onDeleteTodo: (id: string) => void;
   items: Todo[];
 }
 
-const TodoList: React.FC<Props> = ({ items, setTodos }) => {
-  const deleteTodo = (id: string) => {
-    setTodos(items.filter((item) => item.id !== id));
-  };
+const TodoList: React.FC<Props> = ({ items, onDeleteTodo }) => {
   return (
     <ul>
       {items.map((todo: Todo) => (
         <li key={todo.id}>
           {todo.text}{" "}
-          <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+          <button onClick={() => onDeleteTodo(todo.id)}>Delete</button>
         </li>
       ))}
     </ul>

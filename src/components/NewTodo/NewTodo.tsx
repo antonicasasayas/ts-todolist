@@ -1,28 +1,33 @@
 import React, { useRef } from "react";
-import { Dispatch, SetStateAction } from "react";
 import { Todo } from "../../todo.model";
 import "./NewTodo.css";
 
-interface Props {
-  setTodos: Dispatch<SetStateAction<Todo[]>>;
-  items: Todo[];
+
+
+type Props = {
+
+  onAddTodo: (todo: Todo) => void;
+  todos: Todo[];
 }
 
-const NewTodo: React.FC<Props> = ({ setTodos, items }) => {
+const NewTodo: React.FC<Props> = ({ onAddTodo, todos }) => {
   const textInputRef = useRef<HTMLInputElement>(null);
 
-  const todoSubmitHandler = (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+     e.preventDefault();
 
-    const enteredText = textInputRef.current!.value;
+     const enteredText = textInputRef.current!.value;
 
-    const newTodo = { id: `t${items.length + 1}`, text: enteredText };
+    const newTodo = { id: `t${todos.length + 1}`, text: enteredText };
+    
+    onAddTodo(newTodo)
+  }
+ 
 
-    setTodos((prevTodos) => [...prevTodos, newTodo]);
-  };
+  
 
   return (
-    <form onSubmit={todoSubmitHandler}>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <div className="form-control">
         <label htmlFor="todo-text">Todo Text</label>
         <input type="text" ref={textInputRef} id="todo-text" />
